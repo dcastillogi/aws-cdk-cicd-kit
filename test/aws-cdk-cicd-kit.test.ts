@@ -1,17 +1,15 @@
-// import * as cdk from 'aws-cdk-lib/core';
-// import { Template } from 'aws-cdk-lib/assertions';
-// import * as AwsCdkCicdKit from '../lib/aws-cdk-cicd-kit-stack';
+import * as cdk from 'aws-cdk-lib/core';
+import { Template } from 'aws-cdk-lib/assertions';
+import { PipelineStack } from '../lib/core/pipeline-stack';
+import { pipelineConfig } from '../config/config';
 
-// example test. To run these tests, uncomment this file along with the
-// example resource in lib/aws-cdk-cicd-kit-stack.ts
-test('SQS Queue Created', () => {
-//   const app = new cdk.App();
-//     // WHEN
-//   const stack = new AwsCdkCicdKit.AwsCdkCicdKitStack(app, 'MyTestStack');
-//     // THEN
-//   const template = Template.fromStack(stack);
+test('PipelineStack creates a CodePipeline', () => {
+  const app = new cdk.App();
+  const stack = new PipelineStack(app, 'TestPipelineStack', {
+    env: { account: '111111111111', region: 'us-east-1' },
+    config: pipelineConfig,
+  });
 
-//   template.hasResourceProperties('AWS::SQS::Queue', {
-//     VisibilityTimeout: 300
-//   });
+  const template = Template.fromStack(stack);
+  template.resourceCountIs('AWS::CodePipeline::Pipeline', 1);
 });
