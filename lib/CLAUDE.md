@@ -1,51 +1,29 @@
-# lib/ — Guía de organización
-
-## Estructura
+# lib/ — Structure guide
 
 ```
 lib/
-├── core/           — Pipeline e infraestructura de orquestación
-├── services/       — Stacks de aplicación (uno por servicio)
-├── constructs/     — Constructs CDK reutilizables
-└── CLAUDE.md       — Este archivo
+├── core/           — Base infrastructure shared across all environments (pipeline, stages)
+├── services/       — Application stacks (one file per service)
+├── constructs/     — Reusable CDK constructs
+└── CLAUDE.md       — This file
 ```
 
----
+## Ground rule
 
-## core/
-
-Infraestructura que conecta todo el pipeline.
-
-| Archivo | Responsabilidad |
-|---------|----------------|
-| `pipeline-stack.ts` | Stack de CodePipeline desplegado en la tooling account. Aquí se agregan o reordenan stages. |
-| `app-stage.ts` | `cdk.Stage` instanciado por entorno. Aquí se registran los stacks de `services/` para que el pipeline los despliegue. |
-
----
-
-## services/
-
-Un archivo por stack desplegable. Cada stack recibe `envConfig: EnvironmentConfig` en sus props para poder adaptarse por entorno.
-
-**Patrón:**
+Every stack in `services/` must extend `BaseStack` (`lib/constructs/base-stack.ts`), never `cdk.Stack` directly. `BaseStack` enforces consistent naming, automatic tagging, and environment helpers.
 
 ```typescript
-interface MyServiceStackProps extends cdk.StackProps {
-  envConfig: EnvironmentConfig;
-}
-
-export class MyServiceStack extends cdk.Stack {
-  constructor(scope: Construct, id: string, props: MyServiceStackProps) {
+export class MyServiceStack extends BaseStack {
+  constructor(scope: Construct, id: string, props: BaseStackProps) {
     super(scope, id, props);
-    // recursos aquí
   }
 }
 ```
 
-Para agregar un nuevo stack al pipeline, instanciarlo en `core/app-stage.ts`.
+## services/
 
----
+One file per deployable stack. Register each new stack in `core/app-stage.ts` so the pipeline picks it up.
 
 ## constructs/
 
-Constructs L2/L3 compartidos entre múltiples stacks de `services/`. Deben ser genéricos y agnósticos al entorno; los valores específicos se pasan por props.
+Shared L2/L3 constructs reused across multiple stacks. Keep them generic and environment-agnostic; pass specific values via props.
