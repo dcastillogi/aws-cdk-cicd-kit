@@ -46,10 +46,10 @@ export class PipelineStack extends cdk.Stack {
     );
 
     pipeline.addStage(
-      new AppStage(this, config.qa.name, {
-        env: { account: config.qa.account, region: config.qa.region },
+      new AppStage(this, config.qas.name, {
+        env: { account: config.qas.account, region: config.qas.region },
         projectConfig: config.project,
-        envConfig: config.qa,
+        envConfig: config.qas,
       }),
       {
         pre: [
@@ -62,10 +62,10 @@ export class PipelineStack extends cdk.Stack {
     );
 
     pipeline.addStage(
-      new AppStage(this, config.prod.name, {
-        env: { account: config.prod.account, region: config.prod.region },
+      new AppStage(this, config.prd.name, {
+        env: { account: config.prd.account, region: config.prd.region },
         projectConfig: config.project,
-        envConfig: config.prod,
+        envConfig: config.prd,
       }),
       {
         pre: [

@@ -16,8 +16,8 @@ export interface PipelineConfig {
   project: ProjectConfig;
   tooling: AccountConfig;
   dev: EnvironmentConfig;
-  qa: EnvironmentConfig;
-  prod: EnvironmentConfig;
+  qas: EnvironmentConfig;
+  prd: EnvironmentConfig;
   github: {
     owner: string;
     repo: string;

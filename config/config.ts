@@ -15,8 +15,8 @@ export const pipelineConfig: PipelineConfig = {
     region: 'us-east-1'
   },
   dev: devConfig,
-  qa: qaConfig,
-  prod: prodConfig,
+  qas: qaConfig,
+  prd: prodConfig,
   github: {
     owner: 'REPLACE_WITH_GITHUB_OWNER',
     repo: 'REPLACE_WITH_GITHUB_REPO',
