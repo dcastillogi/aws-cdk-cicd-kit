@@ -1,6 +1,9 @@
-export interface EnvironmentConfig {
+export interface AccountConfig {
   account: string;
   region: string;
+}
+
+export interface EnvironmentConfig extends AccountConfig {
   name: string;
 }
 
@@ -11,7 +14,7 @@ export interface ProjectConfig {
 
 export interface PipelineConfig {
   project: ProjectConfig;
-  tooling: EnvironmentConfig;
+  tooling: AccountConfig;
   dev: EnvironmentConfig;
   qa: EnvironmentConfig;
   prod: EnvironmentConfig;

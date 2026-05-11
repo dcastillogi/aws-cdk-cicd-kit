@@ -12,8 +12,7 @@ export const pipelineConfig: PipelineConfig = {
   },
   tooling: {
     account: 'REPLACE_WITH_TOOLING_ACCOUNT_ID',
-    region: 'us-east-1',
-    name: 'tooling',
+    region: 'us-east-1'
   },
   dev: devConfig,
   qa: qaConfig,
