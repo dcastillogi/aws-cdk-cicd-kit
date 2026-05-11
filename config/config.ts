@@ -1,6 +1,6 @@
 import { devConfig } from './environments/dev';
-import { qaConfig } from './environments/qa';
-import { prodConfig } from './environments/prod';
+import { qaConfig } from './environments/qas';
+import { prodConfig } from './environments/prd';
 import { PipelineConfig } from './types';
 
 export * from './types';
