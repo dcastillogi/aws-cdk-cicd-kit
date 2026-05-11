@@ -14,8 +14,10 @@ export class PipelineStack extends cdk.Stack {
 
     const { config } = props;
 
-    const pipeline = new pipelines.CodePipeline(this, 'Pipeline', {
-      pipelineName: 'CicdKitPipeline',
+    const pipelineName = `${config.project.prefix}-${config.project.usage}-pipeline`;
+
+    const pipeline = new pipelines.CodePipeline(this, pipelineName, {
+      pipelineName,
       selfMutation: true,
       crossAccountKeys: true,
       synth: new pipelines.ShellStep('Synth', {
@@ -29,7 +31,7 @@ export class PipelineStack extends cdk.Stack {
     });
 
     pipeline.addStage(
-      new AppStage(this, 'Dev', {
+      new AppStage(this, config.dev.name, {
         env: { account: config.dev.account, region: config.dev.region },
         projectConfig: config.project,
         envConfig: config.dev,
@@ -44,13 +46,14 @@ export class PipelineStack extends cdk.Stack {
     );
 
     pipeline.addStage(
-      new AppStage(this, 'QA', {
+      new AppStage(this, config.qa.name, {
         env: { account: config.qa.account, region: config.qa.region },
         projectConfig: config.project,
         envConfig: config.qa,
       }),
       {
         pre: [
+          new pipelines.ManualApprovalStep('QasApproval'),
           new pipelines.ShellStep('IntegrationTests', {
             commands: ['echo "Add integration tests here"'],
           }),
@@ -59,7 +62,7 @@ export class PipelineStack extends cdk.Stack {
     );
 
     pipeline.addStage(
-      new AppStage(this, 'Prod', {
+      new AppStage(this, config.prod.name, {
         env: { account: config.prod.account, region: config.prod.region },
         projectConfig: config.project,
         envConfig: config.prod,

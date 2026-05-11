@@ -5,7 +5,10 @@ import { pipelineConfig } from '../config/config';
 
 const app = new cdk.App();
 
-new PipelineStack(app, 'PipelineStack', {
+const stackName = `${pipelineConfig.project.prefix}-${pipelineConfig.project.usage}-pipeline`;
+
+new PipelineStack(app, stackName, {
+  stackName,
   env: {
     account: pipelineConfig.tooling.account,
     region: pipelineConfig.tooling.region,
