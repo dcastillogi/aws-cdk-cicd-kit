@@ -14,9 +14,11 @@ export const pipelineConfig: PipelineConfig = {
     account: 'REPLACE_WITH_TOOLING_ACCOUNT_ID',
     region: 'us-east-1',
   },
-  dev: { ...devConfig, name: 'dev' },
-  qas: { ...qasConfig, name: 'qas' },
-  prd: { ...prdConfig, name: 'prd' },
+  environments: {
+    dev: devConfig,
+    qas: qasConfig,
+    prd: prdConfig,
+  },
   github: {
     owner: 'REPLACE_WITH_GITHUB_OWNER',
     repo: 'REPLACE_WITH_GITHUB_REPO',

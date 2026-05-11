@@ -1,10 +1,11 @@
 import * as cdk from 'aws-cdk-lib/core';
 import { Construct } from 'constructs';
-import { EnvironmentConfig, ProjectConfig } from '../../config/config';
+import { AccountConfig, ProjectConfig } from '../../config/config';
 
 export interface BaseStackProps extends cdk.StackProps {
   projectConfig: ProjectConfig;
-  envConfig: EnvironmentConfig;
+  envConfig: AccountConfig;
+  envName: string;
 }
 
 interface ResourceNameOpts {
@@ -14,17 +15,19 @@ interface ResourceNameOpts {
 }
 
 export class BaseStack extends cdk.Stack {
-  readonly envConfig: EnvironmentConfig;
+  readonly envConfig: AccountConfig;
   readonly projectConfig: ProjectConfig;
+  readonly envName: string;
 
   constructor(scope: Construct, id: string, props: BaseStackProps) {
     super(scope, id, props);
     this.envConfig = props.envConfig;
     this.projectConfig = props.projectConfig;
+    this.envName = props.envName;
 
     cdk.Tags.of(this).add('Prefix', props.projectConfig.prefix);
     cdk.Tags.of(this).add('Usage', props.projectConfig.usage);
-    cdk.Tags.of(this).add('Environment', props.envConfig.name);
+    cdk.Tags.of(this).add('Environment', props.envName);
     cdk.Tags.of(this).add('ManagedBy', 'cdk');
   }
 
@@ -36,7 +39,7 @@ export class BaseStack extends cdk.Stack {
     const parts = [
       this.projectConfig.prefix,
       this.projectConfig.usage,
-      this.envConfig.name,
+      this.envName,
       resource,
       ...(location ? [location] : []),
       ...(description ? [description] : []),
@@ -45,19 +48,16 @@ export class BaseStack extends cdk.Stack {
   }
 
   // Same as resourceName but truncated to maxLength (default 64).
-  // Truncates from the end, preserving the most significant segments first.
   resourceNameCapped(opts: ResourceNameOpts, maxLength = 64): string {
     return this.resourceName(opts).slice(0, maxLength);
   }
 
-  // Returns true only when deploying to production.
   get isProd(): boolean {
-    return this.envConfig.name === 'prd';
+    return this.envName === 'prd';
   }
 
-  // Returns a value conditioned on the current environment.
   // e.g. this.byEnv({ dev: 1, qas: 2, prd: 10 })
   byEnv<T>(values: { dev: T; qas: T; prd: T }): T {
-    return values[this.envConfig.name as 'dev' | 'qas' | 'prd'];
+    return values[this.envName as 'dev' | 'qas' | 'prd'];
   }
 }

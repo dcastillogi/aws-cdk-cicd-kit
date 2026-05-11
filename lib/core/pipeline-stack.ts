@@ -12,9 +12,9 @@ export class PipelineStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props: PipelineStackProps) {
     super(scope, id, props);
 
-    const { config } = props;
+    const { project, environments, github } = props.config;
 
-    const pipelineName = `${config.project.prefix}-${config.project.usage}-pipeline`;
+    const pipelineName = `${project.prefix}-${project.usage}-pipeline`;
 
     const pipeline = new pipelines.CodePipeline(this, pipelineName, {
       pipelineName,
@@ -22,19 +22,19 @@ export class PipelineStack extends cdk.Stack {
       crossAccountKeys: true,
       synth: new pipelines.ShellStep('Synth', {
         input: pipelines.CodePipelineSource.connection(
-          `${config.github.owner}/${config.github.repo}`,
-          config.github.branch,
-          { connectionArn: config.github.connectionArn },
+          `${github.owner}/${github.repo}`,
+          github.branch,
+          { connectionArn: github.connectionArn },
         ),
         commands: ['npm ci', 'npm run build', 'npx cdk synth'],
       }),
     });
 
     pipeline.addStage(
-      new AppStage(this, config.dev.name, {
-        env: { account: config.dev.account, region: config.dev.region },
-        projectConfig: config.project,
-        envConfig: config.dev,
+      new AppStage(this, 'dev', {
+        env: { account: environments.dev.account, region: environments.dev.region },
+        projectConfig: project,
+        envConfig: environments.dev,
       }),
       {
         pre: [
@@ -46,10 +46,10 @@ export class PipelineStack extends cdk.Stack {
     );
 
     pipeline.addStage(
-      new AppStage(this, config.qas.name, {
-        env: { account: config.qas.account, region: config.qas.region },
-        projectConfig: config.project,
-        envConfig: config.qas,
+      new AppStage(this, 'qas', {
+        env: { account: environments.qas.account, region: environments.qas.region },
+        projectConfig: project,
+        envConfig: environments.qas,
       }),
       {
         pre: [
@@ -62,10 +62,10 @@ export class PipelineStack extends cdk.Stack {
     );
 
     pipeline.addStage(
-      new AppStage(this, config.prd.name, {
-        env: { account: config.prd.account, region: config.prd.region },
-        projectConfig: config.project,
-        envConfig: config.prd,
+      new AppStage(this, 'prd', {
+        env: { account: environments.prd.account, region: environments.prd.region },
+        projectConfig: project,
+        envConfig: environments.prd,
       }),
       {
         pre: [

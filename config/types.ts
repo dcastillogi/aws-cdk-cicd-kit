@@ -3,21 +3,17 @@ export interface AccountConfig {
   region: string;
 }
 
-export interface EnvironmentConfig extends AccountConfig {
-  name: string;
-}
-
 export interface ProjectConfig {
   prefix: string;
   usage: string;
 }
 
+export type EnvName = 'dev' | 'qas' | 'prd';
+
 export interface PipelineConfig {
   project: ProjectConfig;
   tooling: AccountConfig;
-  dev: EnvironmentConfig;
-  qas: EnvironmentConfig;
-  prd: EnvironmentConfig;
+  environments: Record<EnvName, AccountConfig>;
   github: {
     owner: string;
     repo: string;
