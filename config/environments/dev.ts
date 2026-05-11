@@ -1,7 +1,6 @@
-import { EnvironmentConfig } from '../config';
+import { AccountConfig } from '../types';
 
-export const devConfig: EnvironmentConfig = {
+export const devConfig: AccountConfig = {
   account: 'REPLACE_WITH_DEV_ACCOUNT_ID',
   region: 'us-east-1',
-  name: 'dev',
 };
