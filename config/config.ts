@@ -19,7 +19,7 @@ export const pipelineConfig: PipelineConfig = {
   prod: prodConfig,
   github: {
     owner: 'REPLACE_WITH_GITHUB_OWNER',
-    repo: 'aws-cdk-cicd-kit',
+    repo: 'REPLACE_WITH_GITHUB_REPO',
     branch: 'main',
     connectionArn: 'REPLACE_WITH_CODESTAR_CONNECTION_ARN',
   },
