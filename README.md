@@ -6,28 +6,6 @@ Cross-account CI/CD pipeline built with AWS CDK Pipelines. Deployed in a **tooli
 
 ![Architecture diagram](docs/architecture.drawio.png)
 
-```
-GitHub (main)
-    │
-    ▼
-┌─────────────────────────────────────────────────────────────┐
-│  Tooling Account                                            │
-│                                                             │
-│  CodePipeline: {prefix}-{usage}-pipeline                    │
-│  ┌──────────┐  ┌────────┐  ┌────────┐  ┌────────────────┐  │
-│  │  Synth   │→ │Mutate  │→ │Assets  │→ │ Stages         │  │
-│  │  (build) │  │(self)  │  │        │  │ dev            │  │
-│  └──────────┘  └────────┘  └────────┘  │ ↓ [approval]   │  │
-│                                         │ qas            │  │
-│                                         │ ↓ [approval]   │  │
-│                                         │ prd            │  │
-│                                         └────────────────┘  │
-└─────────────────────────────────────────────────────────────┘
-         │              │              │
-         ▼              ▼              ▼
-   Dev Account    QAS Account    PRD Account
-```
-
 ## Project structure
 
 ```
