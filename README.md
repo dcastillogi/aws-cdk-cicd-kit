@@ -4,7 +4,7 @@ Cross-account CI/CD pipeline built with AWS CDK Pipelines. Deployed in a **tooli
 
 ## Architecture
 
-![Architecture diagram](docs/architecture.drawio)
+![Architecture diagram](docs/architecture.drawio.png)
 
 ```
 GitHub (main)
@@ -48,7 +48,8 @@ lib/
 │   └── base-stack.ts       Base class for all service stacks
 └── CLAUDE.md               lib/ structure guide
 docs/
-├── architecture.drawio     Architecture diagram (draw.io)
+├── architecture.drawio.png Architecture diagram
+├── architecture.drawio     Architecture source (draw.io)
 └── runbooks/
     └── cross-account-bootstrap.md
 ```
