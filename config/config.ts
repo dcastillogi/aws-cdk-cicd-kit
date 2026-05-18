@@ -1,9 +1,9 @@
-import { devConfig } from './environments/dev';
-import { qasConfig } from './environments/qas';
-import { prdConfig } from './environments/prd';
-import { PipelineConfig } from './types';
+import { devConfig } from '@/config/environments/dev';
+import { prdConfig } from '@/config/environments/prd';
+import { qasConfig } from '@/config/environments/qas';
+import { PipelineConfig } from '@/config/types';
 
-export * from './types';
+export * from '@/config/types';
 
 export const pipelineConfig: PipelineConfig = {
   project: {

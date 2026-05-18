@@ -1,11 +1,11 @@
 import * as cdk from 'aws-cdk-lib/core';
 import { Construct } from 'constructs';
-import { AccountConfig, ProjectConfig } from '../../config/config';
+import { EnvName, EnvironmentConfig, ProjectConfig } from '@/config/config';
 
 export interface BaseStackProps extends cdk.StackProps {
   projectConfig: ProjectConfig;
-  envConfig: AccountConfig;
-  envName: string;
+  envConfig: EnvironmentConfig;
+  envName: EnvName;
 }
 
 interface ResourceNameOpts {
@@ -15,9 +15,9 @@ interface ResourceNameOpts {
 }
 
 export class BaseStack extends cdk.Stack {
-  readonly envConfig: AccountConfig;
+  readonly envConfig: EnvironmentConfig;
   readonly projectConfig: ProjectConfig;
-  readonly envName: string;
+  readonly envName: EnvName;
 
   constructor(scope: Construct, id: string, props: BaseStackProps) {
     super(scope, id, props);
@@ -57,7 +57,7 @@ export class BaseStack extends cdk.Stack {
   }
 
   // e.g. this.byEnv({ dev: 1, qas: 2, prd: 10 })
-  byEnv<T>(values: { dev: T; qas: T; prd: T }): T {
-    return values[this.envName as 'dev' | 'qas' | 'prd'];
+  byEnv<T>(values: Record<EnvName, T>): T {
+    return values[this.envName];
   }
 }

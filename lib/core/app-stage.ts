@@ -1,11 +1,12 @@
 import * as cdk from 'aws-cdk-lib/core';
 import { Construct } from 'constructs';
-import { AccountConfig, ProjectConfig } from '../../config/config';
-import { ExampleStack } from '../services/example-stack';
+import { EnvName, EnvironmentConfig, ProjectConfig } from '@/config/config';
+import { ExampleStack } from '@/lib/services/example-stack';
 
 interface AppStageProps extends cdk.StageProps {
   projectConfig: ProjectConfig;
-  envConfig: AccountConfig;
+  envConfig: EnvironmentConfig;
+  envName: EnvName;
 }
 
 export class AppStage extends cdk.Stage {
@@ -14,9 +15,10 @@ export class AppStage extends cdk.Stage {
 
     new ExampleStack(this, 'ExampleStack', {
       env: { account: props.envConfig.account, region: props.envConfig.region },
+      terminationProtection: props.envConfig.flags.deletionProtection,
       projectConfig: props.projectConfig,
       envConfig: props.envConfig,
-      envName: id,
+      envName: props.envName,
     });
   }
 }

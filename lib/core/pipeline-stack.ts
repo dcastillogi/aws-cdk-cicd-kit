@@ -1,8 +1,8 @@
 import * as cdk from 'aws-cdk-lib/core';
 import * as pipelines from 'aws-cdk-lib/pipelines';
 import { Construct } from 'constructs';
-import { PipelineConfig } from '../../config/config';
-import { AppStage } from './app-stage';
+import { PipelineConfig } from '@/config/config';
+import { AppStage } from '@/lib/core/app-stage';
 
 interface PipelineStackProps extends cdk.StackProps {
   config: PipelineConfig;
@@ -35,6 +35,7 @@ export class PipelineStack extends cdk.Stack {
         env: { account: environments.dev.account, region: environments.dev.region },
         projectConfig: project,
         envConfig: environments.dev,
+        envName: 'dev',
       }),
       {
         pre: [
@@ -50,12 +51,13 @@ export class PipelineStack extends cdk.Stack {
         env: { account: environments.qas.account, region: environments.qas.region },
         projectConfig: project,
         envConfig: environments.qas,
+        envName: 'qas',
       }),
       {
         pre: [
           new pipelines.ManualApprovalStep('QasApproval'),
           new pipelines.ShellStep('IntegrationTests', {
-            commands: ['echo "Add integration tests here"'],
+            commands: ['npm ci', 'npm test'],
           }),
         ],
       },
@@ -66,12 +68,13 @@ export class PipelineStack extends cdk.Stack {
         env: { account: environments.prd.account, region: environments.prd.region },
         projectConfig: project,
         envConfig: environments.prd,
+        envName: 'prd',
       }),
       {
         pre: [
           new pipelines.ManualApprovalStep('ProdApproval'),
           new pipelines.ShellStep('SmokeTests', {
-            commands: ['echo "Add pre-prod smoke tests here"'],
+            commands: ['npm ci', 'npm test'],
           }),
         ],
       },

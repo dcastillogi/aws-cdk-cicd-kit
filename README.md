@@ -27,10 +27,11 @@ lib/
 └── CLAUDE.md               lib/ structure guide
 docs/
 ├── architecture.drawio.png Architecture diagram
-├── architecture.drawio     Architecture source (draw.io)
 └── runbooks/
     └── cross-account-bootstrap.md
 ```
+
+Internal TypeScript imports use the `@/` alias from the repository root, for example `@/lib/core/pipeline-stack`.
 
 ## Configuration
 
@@ -46,6 +47,8 @@ Fill in the placeholders in `config/config.ts` and `config/environments/`:
 | Dev account ID | `config/environments/dev.ts` |
 | QAS account ID | `config/environments/qas.ts` |
 | PRD account ID | `config/environments/prd.ts` |
+
+Environment-specific values such as account, region, capacity, flags, and sizes belong in `config/environments/`, not directly in stacks.
 
 ## Adding a service stack
 

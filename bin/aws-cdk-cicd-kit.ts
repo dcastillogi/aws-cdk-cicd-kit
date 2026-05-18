@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import * as cdk from 'aws-cdk-lib/core';
-import { PipelineStack } from '../lib/core/pipeline-stack';
-import { pipelineConfig } from '../config/config';
+import { pipelineConfig } from '@/config/config';
+import { PipelineStack } from '@/lib/core/pipeline-stack';
 
 const app = new cdk.App();
 

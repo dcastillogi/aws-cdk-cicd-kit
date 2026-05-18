@@ -70,7 +70,7 @@ This must be done from the tooling account console — it cannot be automated be
 With bootstrap and the connection in place, deploy the pipeline stack from the tooling account:
 
 ```bash
-cdk deploy PipelineStack
+npx cdk deploy acme-billing-pipeline
 ```
 
 After the first deploy, the pipeline is self-mutating — subsequent changes are picked up automatically when pushed to the configured branch.

@@ -1,7 +1,7 @@
 import * as cdk from 'aws-cdk-lib/core';
 import { Template } from 'aws-cdk-lib/assertions';
-import { PipelineStack } from '../lib/core/pipeline-stack';
-import { pipelineConfig } from '../config/config';
+import { pipelineConfig } from '@/config/config';
+import { PipelineStack } from '@/lib/core/pipeline-stack';
 
 test('PipelineStack creates a CodePipeline', () => {
   const app = new cdk.App();

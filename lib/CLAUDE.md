@@ -40,6 +40,13 @@ services/
 
 The stack file sits at the root of the service folder. Runtime code goes in subfolders named after the compute type (`lambda/`, `ecs/`, `fargate/`, etc.), with one subfolder per function or task.
 
+Use the `@/` path alias for internal imports:
+
+```typescript
+import { BaseStack } from '@/lib/constructs/base-stack';
+import { EnvironmentConfig } from '@/config/config';
+```
+
 ## constructs/
 
 Shared L2/L3 constructs reused across multiple stacks. Keep them generic and environment-agnostic; pass specific values via props.
